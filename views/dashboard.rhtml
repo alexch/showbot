@@ -23,18 +23,26 @@
 </head>
 
 <body>
+  
+  <%
+    def show_id show
+      show['name'].gsub(" ", "_")
+    end
+  
+  %>
 
 	<!-- Main / Shows -->
 	<div data-role="page" id="shows">
 		<div data-role="header">
 			<a href="#profile" data-transition="slidedown" data-icon="back" class="ui-btn-left">Account</a>
 			<h1>Showtime</h1>
-			<a href="#addShow" data-transition="slideup" class="ui-btn-right">Add Show</a>
+      <!-- <a href="#addShow" data-transition="slideup" class="ui-btn-right">Add Show</a> -->
 		</div><!-- /header -->
 			<div data-role="content" class="ui-content" role="main">
 			<ul data-filter="true" data-role="listview" class="ui-listview" role="listbox">
-				<li role="option" tabindex="0" data-theme="c"><a href="" class="ui-link-inherit">Contra Dance</a></li>
-				<li role="option" tabindex="0" data-theme="c"><a href="#show" class="ui-link-inherit">Enter Sillyland Burlesque</a></li>
+			  <% @shows.each do |show| %>
+  				<li role="option" tabindex="0" data-theme="c"><a href="#<%= show_id(show) %>" class="ui-link-inherit"><%= show['name'] %></a></li>
+				<% end %>
 			</div><!-- /content -->
 		</div><!-- /header -->
 	</div><!-- /page -->
@@ -67,238 +75,163 @@
 		</div><!-- /header -->
 	</div><!-- /page -->
 	
-	<!-- A Show -->
-	<div data-role="page" id="show">
-		<div data-role="header">
-			<a href="#shows" data-direction="reverse" data-icon="back" class="ui-btn-left">Shows</a>
-			<h1>Enter Sillyland Burlesque</h1>
-			<a href="#addDate" data-transition="slideup" class="ui-btn-right">Add Date</a>
-		</div><!-- /header -->
-			<div data-role="content">
-						
-					<ul data-inset="false" data-role="listview" role="listbox">
-						<li><a href="#date">Thu April 29 Bottom Of The Hill</a></li>
-						<li><a href="">Sun May 3 The Impala</a></li>
-						<li><a href="">Wed May 6 Bottom Of The Hill</a></li>
-						<li><a href="">Fri May 27 The Impala</a></li>
-					</ul>
-			</div><!-- /content -->
-		</div><!-- /header -->
-	</div><!-- /page -->
-	
-	<!-- Edit Show -->
-	<div data-role="page" id="editShow" data-theme="c">
-		<div data-role="header">
-			<a href="" data-rel="back" data-icon="back" class="ui-btn-left">Save</a>
-			<h1>Edit Show</h1>
-		</div><!-- /header -->
-				<div data-role="content">		
-					<form id="whatShow" action="process" method="post">
-						<!-- Name and Description -->
-						<div data-role="fieldcontain">
-				    		<label for="showname">Show Name:</label>
-				    		<input type="text" name="showname" id="showname" value=""  />
-						</div>
-						<div data-role="fieldcontain">
-							<label for="textarea">One Sentence Description:</label>
-							<textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
-						</div>
-						<div data-role="fieldcontain">
-							<label for="textarea">Five words that either describe, or are part of this show, the more specific or unique the better:</label>
-							<textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
-						</div>
-					</form> 
-				</div>
-			</div><!-- /content -->
-		</div><!-- /header -->
-	</div><!-- /page -->
-	
-	
-	<!-- Add Date -->
-	<div data-role="page" id="addDate"  data-theme="c">
-		<div data-role="header">
-			<a href="" data-rel="back" data-icon="back" class="ui-btn-left">Nevermind</a>
-			<h1>Add A Date</h1>
-			<a href="" data-rel="back" data-icon="back" class="ui-btn-right">Add It</a>
-		</div><!-- /header -->
-		<div data-role="content">
-			<div data-role="fieldcontain"><label for="date2">Calendar Style Default</label><input value="2011-01-01" name="date2" type="date" data-role="datebox" id="date2" data-options='{"mode": "calbox"}'/>	</div>
-			
-				<div>
-		    		<label for="year">Doors:</label>
-		    		<input type="text" name="year" id="year" value="" maxlength="4"/>
-				</div>
-				<div>
-		    		<label for="year">Curtain:</label>
-		    		<input type="text" name="year" id="year" value="" maxlength="4"/>
-				</div>
-			</div>
-			</div>
-			<div data-role="fieldcontain">
-	    		<label for="venuesearch">Search For Venue:</label>
-	    		<input type="search" name="venuesearch" id="venuesearch" value="" />
-			</div>
-		</div><!-- /content -->
-	</div><!-- /page -->	
-	
-	
-	<!-- A Date -->
-	<div data-role="page" id="date">
-		<div data-role="header">
-			<a href="#show" data-direction="reverse" data-icon="back" class="ui-btn-left">Enter Sillyland Dates</a>
-			<h2>Thu April 29</h2>
-			<h2>Doors at 7<br>Curtain at 8</h2>
-			<h2>Bottom Of The Hill</h2>
-			<a href="#editDate" data-transition="flip" data-icon="back" class="ui-btn-right">Edit</a>
-		</div><!-- /header -->
-			<div data-role="content">
-				
-				<fieldset data-role="controlgroup">
-					<ul data-inset="true" data-role="listview" role="listbox">
-						<li><a href="#audience">Audience</a></li>
-					</ul>
-				</fieldset>
-				
-				<div data-role="fieldcontain">
-				    <fieldset data-role="controlgroup">
-				    	<legend>Default Promotion:</legend>
-				         	<input type="radio" name="radio-choice-1" id="radio-choice-1" value="choice-1" checked="checked" />
-				         	<label for="radio-choice-1">None</label>
+	<% @shows.each do |show| %>
+  	<!-- A Show -->
+  	<div data-role="page" id="<%= show_id(show) %>">
+  		<div data-role="header">
+  			<a href="#shows" data-direction="reverse" data-icon="back" class="ui-btn-left">Shows</a>
+  			<h1><%= show['name'] %></h1>
+  		</div><!-- /header -->
+  			<div data-role="content">
 
-				         	<input type="radio" name="radio-choice-1" id="radio-choice-2" value="choice-2"  />
-				         	<label for="radio-choice-2">Bring a homie Free</label>
+  				<fieldset data-role="controlgroup">
+  					<ul data-inset="true" data-role="listview" role="listbox">
+  						<li><a href="#audience<%= show_id(show) %>">Audience</a></li>
+  					</ul>
+  				</fieldset>
+  				<div data-role="fieldcontain">
+  				  <form method="post" action="<%= "/show/#{show['id']}/promo" %>">
+  				    <!-- Promo -->
+  				    <fieldset data-role="controlgroup">
+  				    	<legend>Default Promotion:</legend>
+  				         	<input type="radio" name="radio-choice-1" id="radio-choice-1" value="choice-1" checked="checked" />
+  				         	<label for="radio-choice-1">None</label>
 
-				         	<input type="radio" name="radio-choice-1" id="radio-choice-3" value="choice-3"  />
-				         	<label for="radio-choice-3">You + yer homie Free</label>
-				    </fieldset>
-					<fieldset data-role="controlgroup">
-			    		<label for="freeTicketLimit">Free Ticket Limit:</label>
-			    		<input type="text" name="freeTicketLimit" id="freeTicketLimit" value="0"/>
-					</fieldset>
-				</div>
-				<div data-role="fieldcontain" >
-					<label class="ui-input-text" for="name">Message they hear on the phone</label>
-					<input type="text" name="audioBroadcastUrl" id="audioBroadcastUrl" value="http://"  />
-				</div>
-			</div><!-- /content -->
-		</div><!-- /header -->
-	</div><!-- /page -->
+  				         	<input type="radio" name="radio-choice-1" id="radio-choice-2" value="choice-2"  />
+  				         	<label for="radio-choice-2">Bring a homie Free</label>
+
+  				         	<input type="radio" name="radio-choice-1" id="radio-choice-3" value="choice-3"  />
+  				         	<label for="radio-choice-3">You + yer homie Free</label>
+  				    </fieldset>
+  				    <!-- Ticket Limit -->
+    					<fieldset data-role="controlgroup">
+    			    		<label for="prefix">Promo Code Prefix:</label>
+    			    		<input type="text" name="prefix" id="prefix" value=""/>
+    					</fieldset>
+    					<!-- Submit -->
+      				<fieldset>
+    					  <button value="submit-value" name="submit" data-theme="a" type="submit" class="ui-btn-hidden">Submit</button>
+    				  </fieldset>
+      			</form>
+  				</div>						
+  			</div><!-- /content -->
+  		</div><!-- /header -->
+  	</div><!-- /page -->
 	
-	<!-- Edit Date -->
-	<div data-role="page" id="editDate"  data-theme="c">
-		<div data-role="header">
-			<a href="" data-rel="back" data-icon="back" class="ui-btn-left">Nevermind</a>
-			<h1>Edit Date</h1>
-			<a href="" data-rel="back" data-icon="back" class="ui-btn-right">Save</a>
-		</div><!-- /header -->
-		<div data-role="content">
-			<div data-role="fieldcontain"><label for="date2">Calendar Style Default</label><input value="2011-01-01" name="date2" type="date" data-role="datebox" id="date2" data-options='{"mode": "calbox"}'/>	</div>
+  	<!-- Edit Show -->
+  	<div data-role="page" id="editShow" data-theme="c">
+  		<div data-role="header">
+  			<a href="" data-rel="back" data-icon="back" class="ui-btn-left">Save</a>
+  			<h1>Edit Show</h1>
+  		</div><!-- /header -->
+  				<div data-role="content">		
+  					<form id="whatShow" action="process" method="post">
+  						<!-- Name and Description -->
+  						<div data-role="fieldcontain">
+  				    		<label for="showname">Show Name:</label>
+  				    		<input type="text" name="showname" id="showname" value=""  />
+  						</div>
+  						<div data-role="fieldcontain">
+  							<label for="textarea">One Sentence Description:</label>
+  							<textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
+  						</div>
+  						<div data-role="fieldcontain">
+  							<label for="textarea">Five words that either describe, or are part of this show, the more specific or unique the better:</label>
+  							<textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
+  						</div>
+  					</form> 
+  				</div>
+  			</div><!-- /content -->
+  		</div><!-- /header -->
+  	</div><!-- /page -->
 		
-				<div>
-		    		<label for="year">Doors:</label>
-		    		<input type="text" name="year" id="year" value="" maxlength="4"/>
-				</div>
-				<div>
-		    		<label for="year">Curtain:</label>
-		    		<input type="text" name="year" id="year" value="" maxlength="4"/>
-				</div>
-			</div>
-			</div>
-			<div data-role="fieldcontain">
-	    		<label for="venuesearch">Search For Venue:</label>
-	    		<input type="search" name="venuesearch" id="venuesearch" value="" />
-			</div>
-		</div><!-- /content -->
-	</div><!-- /page -->	
+  	<!-- Edit Date -->
+  	<div data-role="page" id="editDate"  data-theme="c">
+  		<div data-role="header">
+  			<a href="" data-rel="back" data-icon="back" class="ui-btn-left">Nevermind</a>
+  			<h1>Edit Date</h1>
+  			<a href="" data-rel="back" data-icon="back" class="ui-btn-right">Save</a>
+  		</div><!-- /header -->
+  		<div data-role="content">
+  			<div data-role="fieldcontain"><label for="date2">Calendar Style Default</label><input value="2011-01-01" name="date2" type="date" data-role="datebox" id="date2" data-options='{"mode": "calbox"}'/>	</div>
+		
+  				<div>
+  		    		<label for="year">Doors:</label>
+  		    		<input type="text" name="year" id="year" value="" maxlength="4"/>
+  				</div>
+  				<div>
+  		    		<label for="year">Curtain:</label>
+  		    		<input type="text" name="year" id="year" value="" maxlength="4"/>
+  				</div>
+  			</div>
+  			</div>
+  			<div data-role="fieldcontain">
+  	    		<label for="venuesearch">Search For Venue:</label>
+  	    		<input type="search" name="venuesearch" id="venuesearch" value="" />
+  			</div>
+  		</div><!-- /content -->
+  	</div><!-- /page -->	
 	
-	<!-- Audience -->
-	<div data-role="page" id="audience">
-		<div data-role="header">
-			<a href="#show" data-direction="reverse" data-icon="back" class="ui-btn-left">Thu April 29</a>
-			<h1>Audience</h1>
-			<a href="#addSubcriber" data-transition="slideup" data-icon="back" class="ui-btn-right">Add Subscriber</a>
-		</div><!-- /header -->
-			<div data-role="content" class="ui-content" role="main">
-			<ul data-filter="true" data-role="listview" class="ui-listview" role="listbox">
-				<li role="list-divider" data-theme="c">A</li>
-				<li role="option" tabindex="0" data-theme="c"><span class="ui-li-count ui-btn-up-c ui-btn-corner-all">Guest List'd</span><a href="#sub" class="ui-link-inherit">Alan Singly</a></li>
-				<li role="option" tabindex="0" data-theme="c"><a href="" class="ui-link-inherit">Alex Carlson</a></li>
-				<li role="option" tabindex="0" data-theme="c"><span class="ui-li-count ui-btn-up-c ui-btn-corner-all">Guest List'd</span><a href="#sub2" class="ui-link-inherit">Amber Case</a></li>
-			</div><!-- /content -->
-		</div><!-- /header -->
-	</div><!-- /page -->
+  	<!-- Audience -->
+  	<div data-role="page" id="audience<%= show_id(show) %>">
+  		<div data-role="header">
+  			<a href="#<%= show_id(show) %>" data-direction="reverse" data-icon="back" class="ui-btn-left"><%= show['name'] %></a>
+  			<h1>Audience</h1>
+        <!-- <a href="#addSubcriber" data-transition="slideup" data-icon="back" class="ui-btn-right">Add Subscriber</a> -->
+  		</div><!-- /header -->
+  			<div data-role="content" class="ui-content" role="main">
+  			<ul data-filter="true" data-role="listview" class="ui-listview" role="listbox">
+          <!-- <li role="list-divider" data-theme="c">A</li> -->
+          <% show['members'].sort{ |a, b| a['name'].downcase <=> b['name'].downcase }.each do |fan| %>
+  				  <li role="option" tabindex="0" data-theme="c"><a href="" class="ui-link-inherit"><%= fan['name'] %></a></li>
+          <% end %>
+          <!-- <li role="option" tabindex="0" data-theme="c"><span class="ui-li-count ui-btn-up-c ui-btn-corner-all">Guest List'd</span><a href="#sub" class="ui-link-inherit">Alan Singly</a></li> -->
+  			</div><!-- /content -->
+  		</div><!-- /header -->
+  	</div><!-- /page -->
 	
-	<!-- Add Subscriber  -->
-	<div data-role="page" id="addSubcriber"  data-theme="c">
-		<div data-role="header">
-			<a href="" data-rel="back" data-icon="back" class="ui-btn-left">Back</a>
-			<h1>Add Subscriber</h1>
-		</div><!-- /header -->
-		<div data-role="content">
-			<div data-role="fieldcontain">
-	    		<h1>Register a new subscriber for this show by having them text "entersillyland" to (415) 685-4281.</h1>
-			</div>
-		</div><!-- /content -->
-	</div><!-- /page -->
+  	<!-- Add Subscriber  -->
+  	<div data-role="page" id="addSubcriber"  data-theme="c">
+  		<div data-role="header">
+  			<a href="" data-rel="back" data-icon="back" class="ui-btn-left">Back</a>
+  			<h1>Add Subscriber</h1>
+  		</div><!-- /header -->
+  		<div data-role="content">
+  			<div data-role="fieldcontain">
+  	    		<h1>Register a new subscriber for this show by having them text "entersillyland" to (415) 685-4281.</h1>
+  			</div>
+  		</div><!-- /content -->
+  	</div><!-- /page -->
 	
-	<!--  Subscriber -->
-	<div data-role="page" id="sub">
-		<div data-role="header">
-			<a href="#audience" data-direction="reverse" data-icon="back" class="ui-btn-left">Audience</a>
-			<h1>Alan Singley</h1>
-		</div><!-- /header -->
-			<div data-role="content">
-				    <fieldset data-role="controlgroup">
-				    	<legend>Promotion Access:</legend>
-							<input type="radio" name="radio-choice-1" id="radio-choice-1" value="choice-1" checked="checked" />
-				         	<label for="radio-choice-1">Default</label>
+  	<!--  Subscriber -->
+  	<div data-role="page" id="sub">
+  		<div data-role="header">
+  			<a href="#audience<%= show_id(show) %>" data-direction="reverse" data-icon="back" class="ui-btn-left">Audience</a>
+  			<h1>Alan Singley</h1>
+  		</div><!-- /header -->
+  			<div data-role="content">
+  				    <fieldset data-role="controlgroup">
+  				    	<legend>Promotion Access:</legend>
+  							<input type="radio" name="radio-choice-1" id="radio-choice-1" value="choice-1" checked="checked" />
+  				         	<label for="radio-choice-1">Default</label>
 				         	
-				         	<input type="radio" name="radio-choice-1" id="radio-choice-2" value="choice-2"  />
-				         	<label for="radio-choice-2">None</label>
+  				         	<input type="radio" name="radio-choice-1" id="radio-choice-2" value="choice-2"  />
+  				         	<label for="radio-choice-2">None</label>
 				
-				         	<input type="radio" name="radio-choice-1" id="radio-choice-3" value="choice-3"  />
-				         	<label for="radio-choice-3">Bring a homie Free</label>
+  				         	<input type="radio" name="radio-choice-1" id="radio-choice-3" value="choice-3"  />
+  				         	<label for="radio-choice-3">Bring a homie Free</label>
 				
-							<input type="radio" name="radio-choice-4" id="radio-choice-4" value="choice-4" />
-				         	<label for="radio-choice-4">You + yer homie Free</label>
-				    </fieldset>
-					<div data-role="controlgroup">
-						<h3>Promotional Partner</h3>
-					<a href="#sub2" data-transition="slideup" data-role="button">Amber Case</a>
-					</div>
+  							<input type="radio" name="radio-choice-4" id="radio-choice-4" value="choice-4" />
+  				         	<label for="radio-choice-4">You + yer homie Free</label>
+  				    </fieldset>
+  					<div data-role="controlgroup">
+  						<h3>Promotional Partner</h3>
+  					<a href="#sub2" data-transition="slideup" data-role="button">Amber Case</a>
+  					</div>
 					
-			</div><!-- /content -->
-	</div><!-- /page -->
-	
-	<!-- Another Subscriber -->
-	<div data-role="page" id="sub2">
-		<div data-role="header">
-			<a href="#audience" data-direction="reverse" data-icon="back" class="ui-btn-left">Audience</a>
-			<h1>Amber Case</h1>
-		</div><!-- /header -->
-			<div data-role="content">
-				    <fieldset data-role="controlgroup">
-				    	<legend>Promotion Access:</legend>
-							<input type="radio" name="radio-choice-1" id="radio-choice-1" value="choice-1" checked="checked" />
-				         	<label for="radio-choice-1">Default</label>
-				         	
-				         	<input type="radio" name="radio-choice-1" id="radio-choice-2" value="choice-2"  />
-				         	<label for="radio-choice-2">None</label>
-				
-				         	<input type="radio" name="radio-choice-1" id="radio-choice-3" value="choice-3"  />
-				         	<label for="radio-choice-3">Bring a homie Free</label>
-				
-							<input type="radio" name="radio-choice-4" id="radio-choice-4" value="choice-4" />
-				         	<label for="radio-choice-4">You + yer homie Free</label>
-				    </fieldset>
-					<div data-role="controlgroup">
-						<h3>Promotional Partner</h3>
-					<a href="#sub" data-transition="slideup" data-role="button">Alan Singley</a>
-					</div>
-					
-			</div><!-- /content -->
-	</div><!-- /page -->
-	
+  			</div><!-- /content -->
+  	</div><!-- /page -->
+	<% end %>
 	
 	
 	
