@@ -79,6 +79,10 @@ def shows
   JSON.parse(response.body)
 end
 
+get "/in" do
+  p params
+end
+
 ######
 get "/authorize" do
   if credentials
