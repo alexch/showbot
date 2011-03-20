@@ -75,7 +75,7 @@ post "/fan" do
   puts result
 end
 
-get "/in" do
+post "/in" do
   p params
   "ok"  
 end
