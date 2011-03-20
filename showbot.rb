@@ -75,6 +75,10 @@ post "/fan" do
   puts result
 end
 
+get "/in" do
+  p params
+end
+
 ######
 get "/authorize" do
   if credentials
