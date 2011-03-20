@@ -80,8 +80,8 @@ def shows
 end
 
 post "/in" do
+  p params[:plain]
   line = params[:plain].split("\n").first
-  puts "in: #{line}"
   "ok"  
 end
 
