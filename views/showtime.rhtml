@@ -49,6 +49,8 @@
 		// formData is an array; here we use $.param to convert it to a string to display it 
 		// but the form plugin does this for you automatically when it submits the data 
 		var queryString = $.param(formData); 
+
+    $('.showtime-form').html("<h2>Adding you ...</h2>")
 	 
 		// jqForm is a jQuery object encapsulating the form element.  To access the 
 		// DOM element for the form do this: 
@@ -231,13 +233,13 @@
                             <input type="image" src="images/submitUp.png">
                         </div>
                         
-                        <div class="facebook-connect">
-                        
-                        <iframe src="http://www.facebook.com/plugins/like.php?href=derrekwayne.com%2Fshowtime%2F&amp;layout=standard&amp;show_faces=false&amp;width=550&amp;action=like&amp;font=verdana&amp;colorscheme=dark&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:550px; height:45px;" allowTransparency="true"></iframe>
-                                                
-                        </div>
                     
                 </form>
+                <div class="facebook-connect">
+                
+                <iframe src="http://www.facebook.com/plugins/like.php?href=derrekwayne.com%2Fshowtime%2F&amp;layout=standard&amp;show_faces=false&amp;width=550&amp;action=like&amp;font=verdana&amp;colorscheme=dark&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:550px; height:45px;" allowTransparency="true"></iframe>
+                                        
+                </div>
                 
         	</div>
             
