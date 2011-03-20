@@ -49,12 +49,14 @@
 		// formData is an array; here we use $.param to convert it to a string to display it 
 		// but the form plugin does this for you automatically when it submits the data 
 		var queryString = $.param(formData); 
+
+    $('.showtime-form').html("<h2>Adding you ...</h2>")
 	 
 		// jqForm is a jQuery object encapsulating the form element.  To access the 
 		// DOM element for the form do this: 
 		// var formElement = jqForm[0]; 
 	 
-		alert('About to submit: \n\n' + queryString); 
+    // alert('About to submit: \n\n' + queryString); 
 	 
 		// here we could return false to prevent the form from being submitted; 
 		// returning anything other than false will allow the form submit to continue 
@@ -63,11 +65,11 @@
 	
 	function processJson(data) { 
     // 'data' is the json object returned from the server 
-    alert('Thank you! We will keep you updated!' + 
-    '\n\nPhone: ' + data.phone + 
-    '\nEmail: ' + data.email +
-    '\nCity: ' + data.city
-    ); 
+    // alert('Thank you! We will keep you updated!' + 
+    // '\n\nPhone: ' + data.phone + 
+    // '\nEmail: ' + data.email +
+    // '\nCity: ' + data.city
+    // ); 
     
     // Replace form with facebook connect
     $(".showtime-form").animate({opacity: 0}, 1000, 
@@ -200,7 +202,7 @@
         
         	<div class="signUp"><img src="images/signUp.png" /></div>
         
-                <form id="showtime-form" class="showtime-form" action="processForm.php" method="post" accept-charset="utf-8">
+                <form id="showtime-form" class="showtime-form" action="/fan" method="post" accept-charset="utf-8">
                     
                         <div class="mobileInput">
                             <label><img src="images/mobilephone.png" /></label><br />
@@ -231,13 +233,13 @@
                             <input type="image" src="images/submitUp.png">
                         </div>
                         
-                        <div class="facebook-connect">
-                        
-                        <iframe src="http://www.facebook.com/plugins/like.php?href=derrekwayne.com%2Fshowtime%2F&amp;layout=standard&amp;show_faces=false&amp;width=550&amp;action=like&amp;font=verdana&amp;colorscheme=dark&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:550px; height:45px;" allowTransparency="true"></iframe>
-                                                
-                        </div>
                     
                 </form>
+                <div class="facebook-connect">
+                
+                <iframe src="http://www.facebook.com/plugins/like.php?href=derrekwayne.com%2Fshowtime%2F&amp;layout=standard&amp;show_faces=false&amp;width=550&amp;action=like&amp;font=verdana&amp;colorscheme=dark&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:550px; height:45px;" allowTransparency="true"></iframe>
+                                        
+                </div>
                 
         	</div>
             
