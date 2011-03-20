@@ -77,6 +77,7 @@ end
 
 get "/in" do
   p params
+  "ok"  
 end
 
 ######
