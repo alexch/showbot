@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>- Enter Sillyland Berlesque Troope - </title>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.1.min.js"></script> 
+<script type="text/javascript" src="https://github.com/malsup/form/raw/master/jquery.form.js"></script> 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.js"></script>
+
+<script type="text/javascript"> 
+	
+	// prepare the form when the DOM is ready 
+	$(document).ready(function() { 
+	
+		// FORM SUBMISION
+		var options = { 
+			target:        '#formFrame',   // target element(s) to be updated with server response 
+			type:          'post',
+			dataType: 	   'json',
+			beforeSubmit:  showRequest,  // pre-submit callback 
+			success:       processJson  // post-submit callback 
+	 
+			// other available options: 
+			//url:       url         // override for form's 'action' attribute 
+			//type:      type        // 'get' or 'post', override for form's 'method' attribute 
+			//dataType:  null        // 'xml', 'script', or 'json' (expected server response type) 
+			//clearForm: true        // clear all form fields after successful submit 
+			//resetForm: true        // reset the form after successful submit 
+	 
+			// $.ajax options can be used here too, for example: 
+			//timeout:   3000 
+		}; 
+		
+		// bind to the form's submit event 
+		$('#showtime-form').submit(function() { 
+			// inside event callbacks 'this' is the DOM element so we first 
+			// wrap it in a jQuery object and then invoke ajaxSubmit 
+			$(this).ajaxSubmit(options); 
+	 
+			// !!! Important !!! 
+			// always return false to prevent standard browser submit and page navigation 
+			return false; 
+		}); 
+	}); 
+	 
+	// pre-submit callback 
+	function showRequest(formData, jqForm, options) { 
+		// formData is an array; here we use $.param to convert it to a string to display it 
+		// but the form plugin does this for you automatically when it submits the data 
+		var queryString = $.param(formData); 
+	 
+		// jqForm is a jQuery object encapsulating the form element.  To access the 
+		// DOM element for the form do this: 
+		// var formElement = jqForm[0]; 
+	 
+		alert('About to submit: \n\n' + queryString); 
+	 
+		// here we could return false to prevent the form from being submitted; 
+		// returning anything other than false will allow the form submit to continue 
+		return true; 
+	} 
+	
+	function processJson(data) { 
+    // 'data' is the json object returned from the server 
+    alert('Thank you! We will keep you updated!' + 
+    '\n\nPhone: ' + data.phone + 
+    '\nEmail: ' + data.email +
+    '\nCity: ' + data.city
+    ); 
+    
+    // Replace form with facebook connect
+    $(".showtime-form").animate({opacity: 0}, 1000, 
+    	function() {
+    	$('.showtime-form').replaceWith($('.facebook-connect'));
+    	$(".facebook-connect").animate({opacity: 1}, 1000);
+     });
+     
+    //$(".showtime-form").animate({top: 20}, 1000);
+    //$(".emailInput").animate({opacity: 0}, 3000);
+    //$(".cityInput").animate({opacity: 0}, 3000);
+}
+	
+</script> 
+
+<style type="text/css">
+
+    body, html{
+        margin:0;
+        padding:0;
+        background:false;
+		background:#000000 url(images/grad.gif) repeat-x 0 top;
+    }
+	.header{
+		padding-top:40px;
+		padding-bottom:10px;
+		width:auto;
+		text-align:center;
+	}
+    .frame{
+		text-align:center;
+        margin:2px auto;
+		width:750px;
+		height:480px;
+        color:#000000;
+        font-family:Verdana;
+        font-size:10px;
+		background:url(images/theater.jpg) bottom;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		overflow:hidden;
+		
+    }
+	.formFrame {
+        padding:5px;
+		margin-top:350px;
+		width:auto;
+		height:85px;
+		color:#FFFFFF;
+        font-family:Verdana;
+        font-size:12px;
+		text-align:center;
+		background: #282B2A; /* old browsers */
+		background: -moz-linear-gradient(top, #282B2A 50%, #0a0e0a 51%, #0a0809 100%); /* firefox */
+
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(50%,#282B2A), color-stop(51%,#0a0e0a), color-stop(100%,#0a0809)); /* webkit */
+
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#282B2A', endColorstr='#0a0809',GradientType=0 ); /* ie */
+	}
+		
+	}
+	.vimeoEmbed{
+		padding:5px;
+		width:auto;
+		text-align:center;
+		background-color:#000;
+		
+		  /* for IE */
+		  /*filter:alpha(opacity=60);*/
+		  /* CSS3 standard */
+		  /*opacity:0.6;*/
+	}
+	
+	.signUp {
+		margin-left:5px;
+		float:left;
+		padding:5px;
+	}
+	
+	.mobileInput {
+		margin-left:10px;
+		padding-top:10px;
+		float:left;
+		font-family:Verdana, Geneva, sans-serif;
+		font-size:9px;
+		color:#888;
+	}
+	
+	.emailInput {
+		margin-left:10px;
+		padding-top:10px;
+		float:left;
+	}
+	
+	.cityInput {
+		margin-left:10px;
+		padding-top:10px;
+		float:left;
+	}
+	
+	.submit{
+		margin-right:10px;
+		padding-top:10px;
+		float:right;
+	}
+	.showtime-form {
+		overflow:hidden;
+	}
+	.facebook-connect {
+		overflow:hidden;
+		opacity: 0;
+		margin-top: 28px;
+		margin-left: 15px;
+	}
+	
+	
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+	<img src="images/header.png" />
+</div>
+
+    <div class="frame">
+        
+        <div class="formFrame">
+        
+        	<div class="signUp"><img src="images/signUp.png" /></div>
+        
+                <form id="showtime-form" class="showtime-form" action="processForm.php" method="post" accept-charset="utf-8">
+                    
+                        <div class="mobileInput">
+                            <label><img src="images/mobilephone.png" /></label><br />
+                            <input type="text" name="phone" maxlength="10"/><br />
+                            just the numbers (10 digits)
+                        </div>
+                        
+                        <div class="emailInput">   
+                            <label><img src="images/email.png" /></label><br />
+                            <input type="text" name="email"/>
+                        </div>
+                        
+                        <div class="cityInput">   
+                        	<label><img src="images/yourcity.png" /></label><br /> 
+                            <select class="dropdown" name="city">
+                                <option>San Francisco</option>
+                                <option>Los Angeles</option>
+                                <option>New Orleans</option>
+                                <option>Seattle</option>
+                                <option>New York</option>
+                                <option>Vegas</option>
+                                <option>Tokyo</option>
+                                <option>Paris</option>
+                            </select> 
+                        </div>
+                    
+                        <div class="submit">
+                            <input type="image" src="images/submitUp.png">
+                        </div>
+                        
+                        <div class="facebook-connect">
+                        
+                        <iframe src="http://www.facebook.com/plugins/like.php?href=derrekwayne.com%2Fshowtime%2F&amp;layout=standard&amp;show_faces=false&amp;width=550&amp;action=like&amp;font=verdana&amp;colorscheme=dark&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:550px; height:45px;" allowTransparency="true"></iframe>
+                                                
+                        </div>
+                    
+                </form>
+                
+        	</div>
+            
+        </div>
+        
+	</div>
+    
+
+</body>
+</html>
