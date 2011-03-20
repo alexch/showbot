@@ -66,13 +66,17 @@ get "/" do
 end
 
 get "/dashboard" do
+  @shows = shows['projects']['favorites']
   erb :dashboard
 end
 
 post "/fan" do
-  response = access_token.post(api_url("/project/#{BURLESQUE_PROJECT_ID}/member"), :addresses => params[:email], :format => :json)
-  result = JSON.parse(response.body)
-  puts result
+  access_token.post(api_url("/project/#{BURLESQUE_PROJECT_ID}/member"), :addresses => params[:email], :format => :json)
+end
+
+def shows
+  response = access_token.get api_url("/projects")
+  JSON.parse(response.body)
 end
 
 ######

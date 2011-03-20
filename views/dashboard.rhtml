@@ -33,8 +33,9 @@
 		</div><!-- /header -->
 			<div data-role="content" class="ui-content" role="main">
 			<ul data-filter="true" data-role="listview" class="ui-listview" role="listbox">
-				<li role="option" tabindex="0" data-theme="c"><a href="" class="ui-link-inherit">Contra Dance</a></li>
-				<li role="option" tabindex="0" data-theme="c"><a href="#show" class="ui-link-inherit">Enter Sillyland Burlesque</a></li>
+			  <% @shows.each do |show| %>
+  				<li role="option" tabindex="0" data-theme="c"><a href="" class="ui-link-inherit"><%= show['name'] %></a></li>
+				<% end %>
 			</div><!-- /content -->
 		</div><!-- /header -->
 	</div><!-- /page -->
