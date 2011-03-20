@@ -86,7 +86,7 @@ get "/" do
 end
 
 get "/dashboard" do
-  @shows = shows['projects']['favorites']
+  @shows = shows['projects']['favorites'].map { |show| show_details show }
   erb :dashboard
 end
 
@@ -97,6 +97,11 @@ end
 def shows
   response = access_token.get api_url("/project")
   JSON.parse(response.body)
+end
+
+def show_details show
+  response = access_token.get api_url(show['path'])
+  JSON.parse(response.body)['project']
 end
 
 post "/in" do
@@ -187,7 +192,7 @@ def do_promo(params)
 end
 
 def spew x
-  "<pre>#{x.pretty_inspect}</pre>"    
+  "<pre>#{x.pretty_inspect}</pre>"
 end
 
 ######
