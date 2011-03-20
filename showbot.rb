@@ -82,6 +82,10 @@ end
 enable :sessions
 
 get "/" do
+  erb :start
+end
+
+get "/show" do
   erb :showtime
 end
 
@@ -95,7 +99,7 @@ post "/fan" do
 end
 
 def shows
-  response = access_token.get api_url("/project")
+  response = access_token.get api_url("/projects")
   JSON.parse(response.body)
 end
 
@@ -153,7 +157,8 @@ post "/show/:show_id/promo/:prefix" do
   do_promo(params)
 end
 
-get "/show/:show_id/promo/:prefix" do
+
+post "/show/:show_id/promo" do
   do_promo(params)
 end
 
