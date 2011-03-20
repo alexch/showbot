@@ -22,8 +22,8 @@ class Rack::Request
   end
 end
 
-BURLESQUE_PROJECT_ID = 46462
-SHOWBOT_USER_ID = 37227
+BURLESQUE_PROJECT_ID = 1
+SHOWBOT_USER_ID = 2
 
 def credentials
   @credentials ||= if ENV['COHUMAN_API_KEY']
@@ -40,7 +40,7 @@ end
 
 def consumer
   @consumer ||= OAuth::Consumer.new( credentials[:key], credentials[:secret], {
-    :site => 'http://api.cohuman.com',
+    :site => 'http://api.sandbox.cohuman.com',
     :request_token_path => '/api/token/request',
     :authorize_path => '/api/authorize',
     :access_token_path => '/api/token/access'
