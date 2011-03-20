@@ -54,7 +54,7 @@
 		// DOM element for the form do this: 
 		// var formElement = jqForm[0]; 
 	 
-		alert('About to submit: \n\n' + queryString); 
+    // alert('About to submit: \n\n' + queryString); 
 	 
 		// here we could return false to prevent the form from being submitted; 
 		// returning anything other than false will allow the form submit to continue 
@@ -63,11 +63,11 @@
 	
 	function processJson(data) { 
     // 'data' is the json object returned from the server 
-    alert('Thank you! We will keep you updated!' + 
-    '\n\nPhone: ' + data.phone + 
-    '\nEmail: ' + data.email +
-    '\nCity: ' + data.city
-    ); 
+    // alert('Thank you! We will keep you updated!' + 
+    // '\n\nPhone: ' + data.phone + 
+    // '\nEmail: ' + data.email +
+    // '\nCity: ' + data.city
+    // ); 
     
     // Replace form with facebook connect
     $(".showtime-form").animate({opacity: 0}, 1000, 
@@ -200,7 +200,7 @@
         
         	<div class="signUp"><img src="images/signUp.png" /></div>
         
-                <form id="showtime-form" class="showtime-form" action="processForm.php" method="post" accept-charset="utf-8">
+                <form id="showtime-form" class="showtime-form" action="/fan" method="post" accept-charset="utf-8">
                     
                         <div class="mobileInput">
                             <label><img src="images/mobilephone.png" /></label><br />

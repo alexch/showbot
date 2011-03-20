@@ -22,6 +22,8 @@ class Rack::Request
   end
 end
 
+BURLESQUE_PROJECT_ID = 46462
+
 def credentials
   @credentials ||= if ENV['COHUMAN_API_KEY']
     {:key => ENV['COHUMAN_API_KEY'], :secret => ENV['COHUMAN_API_SECRET']}
@@ -44,6 +46,15 @@ def consumer
     })
 end
 
+def api_url(path)
+  path.gsub!(/^\//,'') # removes leading slash from path
+  url = "http://api.cohuman.com/#{path}"
+end
+
+def access_token
+  OAuth::AccessToken.from_hash(consumer, :oauth_token => credentials[:oauth_token], :oauth_token_secret => credentials[:oauth_token_secret])
+end
+
 def render_page(query = nil, result = nil)
   Page.new(:session => session, :request => request, :query => query, :result => result).to_html
 end
@@ -58,8 +69,13 @@ get "/dashboard" do
   erb :dashboard
 end
 
-#####
+post "/fan" do
+  response = access_token.post(api_url("/project/#{BURLESQUE_PROJECT_ID}/member"), :addresses => params[:email], :format => :json)
+  result = JSON.parse(response.body)
+  puts result
+end
 
+######
 get "/authorize" do
   if credentials
     request_token = consumer.get_request_token(:oauth_callback=>"#{request.site}/authorized")
@@ -93,6 +109,7 @@ get "/authorized" do
   request_token = session[:request_token]
   access_token = request_token.get_access_token
   session.delete :request_token  # comment this line out if you want to see the request token in the session table
+  puts access_token.inspect
   session[:access_token] = access_token
   redirect "/"
 end
@@ -120,28 +137,3 @@ get "/logout" do
 
   render_page(url, result)
 end
-
-def api_url(path)
-  path.gsub!(/^\//,'') # removes leading slash from path
-  url = "http://api.cohuman.com/#{path}"
-end
-
-# def get_and_render(path)
-#   url = api_url(path)
-#   response = session[:access_token].get(url, {"Content-Type" => "application/json"})
-#   result = JSON.parse(response.body)
-#   render_page(url, result)
-# end
-# 
-# get "/tasks" do
-#   get_and_render "/tasks"
-# end
-# 
-# get "/users" do
-#   get_and_render "/users?limit=0"
-# end
-# 
-# get "/projects" do
-#   get_and_render "/projects?limit=0"
-# end
-
