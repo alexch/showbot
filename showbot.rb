@@ -167,6 +167,7 @@ end
 
 post "/show/:show_id/promo" do
   do_promo(params)
+  erb :dashboard
 end
 
 def do_promo(params)
