@@ -135,6 +135,12 @@ def do_in(params)
     halt 404
   else
     task_id = task['id'].to_i
+
+    # add companion to the project
+    result = api_post("/project/#{project_id}/member", :addresses => params[:from])  # todo: be smart about from vs. sender, using RFC822 headers
+    # todo: error handling
+    pp result
+
     # add companion as a follower
     result = api_post("/task/#{task_id}/follower", :addresses => params[:from])  # todo: be smart about from vs. sender, using RFC822 headers
     # todo: error handling
