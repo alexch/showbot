@@ -20,7 +20,6 @@
 			dataType: 	   'json',
 			beforeSubmit:  showRequest,  // pre-submit callback 
 			success:       processJson  // post-submit callback 
-	 
 			// other available options: 
 			//url:       url         // override for form's 'action' attribute 
 			//type:      type        // 'get' or 'post', override for form's 'method' attribute 
@@ -50,7 +49,11 @@
 		// but the form plugin does this for you automatically when it submits the data 
 		var queryString = $.param(formData); 
 
-    $('.showtime-form').html("<h2>Adding you ...</h2>")
+    $(".showtime-form").animate({opacity: 0}, 1000, 
+    	function() {
+    	$('.showtime-form').replaceWith($('.facebook-connect'));
+    	$(".facebook-connect").animate({opacity: 1}, 1000);
+     });
 	 
 		// jqForm is a jQuery object encapsulating the form element.  To access the 
 		// DOM element for the form do this: 
@@ -71,12 +74,10 @@
     // '\nCity: ' + data.city
     // ); 
     
+
+    
     // Replace form with facebook connect
-    $(".showtime-form").animate({opacity: 0}, 1000, 
-    	function() {
-    	$('.showtime-form').replaceWith($('.facebook-connect'));
-    	$(".facebook-connect").animate({opacity: 1}, 1000);
-     });
+
      
     //$(".showtime-form").animate({top: 20}, 1000);
     //$(".emailInput").animate({opacity: 0}, 3000);

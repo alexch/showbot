@@ -49,7 +49,7 @@ end
 
 def api_url(path)
   path.gsub!(/^\//,'') # removes leading slash from path
-  url = "http://api.cohuman.com/#{path}"
+  url = "http://api.sandbox.cohuman.com/#{path}"
 end
 
 def access_token
@@ -96,6 +96,7 @@ end
 
 post "/fan" do
   access_token.post(api_url("/project/#{BURLESQUE_PROJECT_ID}/member"), :addresses => params[:email], :format => :json)
+  "ok"
 end
 
 def shows
