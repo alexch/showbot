@@ -22,8 +22,8 @@ class Rack::Request
   end
 end
 
-BURLESQUE_PROJECT_ID = 46462
-SHOWBOT_USER_ID = 37227
+BURLESQUE_PROJECT_ID = 1
+SHOWBOT_USER_ID = 2
 
 def credentials
   @credentials ||= if ENV['COHUMAN_API_KEY']
@@ -40,7 +40,7 @@ end
 
 def consumer
   @consumer ||= OAuth::Consumer.new( credentials[:key], credentials[:secret], {
-    :site => 'http://api.cohuman.com',
+    :site => 'http://api.sandbox.cohuman.com',
     :request_token_path => '/api/token/request',
     :authorize_path => '/api/authorize',
     :access_token_path => '/api/token/access'
@@ -82,6 +82,10 @@ end
 enable :sessions
 
 get "/" do
+  erb :start
+end
+
+get "/show" do
   erb :showtime
 end
 
@@ -95,7 +99,7 @@ post "/fan" do
 end
 
 def shows
-  response = access_token.get api_url("/project")
+  response = access_token.get api_url("/projects")
   JSON.parse(response.body)
 end
 
@@ -105,12 +109,60 @@ def show_details show
 end
 
 post "/in" do
-  p params[:plain]
-  line = params[:plain].split("\n").first
-  "ok"  
+  do_in(params)
 end
 
-get "/show/:show_id/promo/:prefix" do
+get "/in" do
+  do_in(params)
+end
+
+def do_in(params)
+  first_line = params[:plain].split("\n").first.strip
+  first_line =~ /([a-zA-Z]+)(\d+)/
+  prefix, suffix = $1, $2
+  promo_code = "#{prefix}#{suffix}"
+  
+  result = api_get(api_url("/project/#{BURLESQUE_PROJECT_ID}"))
+  project = result['project']
+  tasks = project['tasks']
+  task = tasks.detect do |task|
+    name = task['name']
+    (name.split.last == promo_code)
+  end
+  
+  if task.nil?
+    halt 404
+  else
+    task_id = task['id'].to_i
+    # add companion as a follower
+    result = api_post("/task/#{task_id}/follower", :addresses => params[:from])  # todo: be smart about from vs. sender, using RFC822 headers
+    # todo: error handling
+    pp result
+    
+    # add "you win" comment
+    result = api_post("/task/#{task_id}/comment", :text => "ZOMG you both get to go to #{project['name']} for free!")
+    # todo: error handling
+    pp result
+
+    # finish it
+    result = api_post("/task/#{task_id}/activity/finish")
+    # todo: error handling
+    pp result
+    
+    "ok"
+  end
+end
+
+post "/show/:show_id/promo/:prefix" do
+  do_promo(params)
+end
+
+
+post "/show/:show_id/promo" do
+  do_promo(params)
+end
+
+def do_promo(params)
   # for each member
   #   make a task with a different promo code "boobs123"
   #   add member as a follower
@@ -122,18 +174,23 @@ get "/show/:show_id/promo/:prefix" do
     member_id = member['id'].to_i
     next if member_id == SHOWBOT_USER_ID
     this_out = {'member_id' => member_id}
+    
     promo_suffix = rand(10000)  # todo: make it really unique
     promo_code = "#{params[:prefix]}#{promo_suffix}"
+    this_out['promo_code'] = promo_code
+        
     result = api_post(api_url("/task"), 
       :name => "Invite a friend to #{project['project']['name']} with #{promo_code}",
       :project_id => params[:show_id], 
       :owner_id => member_id)
     task_id = result['task']['id'].to_i
     this_out['task_id'] = task_id
+    
     result = api_post(api_url("/task/#{task_id}/comment"), :text => 
       "Invite a friend to join you at #{project['project']['name']}! Have your friend send an email to showbotapp@gmail.com with #{promo_code} as the first line of the email.")
     comment_id = result['comment']['id'].to_i
     this_out['comment_id'] = comment_id
+    
     out << this_out
   end
   spew out
